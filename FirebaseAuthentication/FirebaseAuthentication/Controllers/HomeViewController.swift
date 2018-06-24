@@ -1,33 +1,26 @@
 //
-//  CreateAccountViewController.swift
+//  HomeViewController.swift
 //  FirebaseAuthentication
 //
-//  Created by Christopher Becom on 6/23/18.
+//  Created by Christopher Becom on 6/24/18.
 //
 
 import UIKit
 
-class CreateAccountViewController: UIViewController {
+class HomeViewController: UIViewController {
 
-    // MARK: Constants
-    private let navTitle = "Create New Account"
-    
-    @IBOutlet weak var emailTextField: UITextField!
-    
-    @IBOutlet weak var passwordTextField: UITextField!
-        
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        title = navTitle
-
+        
+        navigationItem.hidesBackButton = true
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign Out", style: .done, target: self, action: #selector(signOutEvent))
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
+    
+    @objc func signOutEvent(sender: UIBarButtonItem) {
+        navigationController?.popToRootViewController(animated: true)
     }
 
     /*
