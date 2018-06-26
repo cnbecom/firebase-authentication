@@ -112,8 +112,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="vX9-c4-q2G">
-                                <rect key="frame" x="80" y="448" width="608" height="128.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="vX9-c4-q2G">
+                                <rect key="frame" x="80" y="433" width="608" height="158.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter an email and password to create an account." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Sm-t0-jSJ">
                                         <rect key="frame" x="0.0" y="0.0" width="608" height="20.5"/>
@@ -122,17 +122,27 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BYp-Ti-h4Q">
-                                        <rect key="frame" x="0.0" y="44.5" width="608" height="30"/>
+                                        <rect key="frame" x="0.0" y="36.5" width="608" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="54s-jf-oLo">
-                                        <rect key="frame" x="0.0" y="98.5" width="608" height="30"/>
+                                        <rect key="frame" x="0.0" y="82.5" width="608" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
+                                    <button opaque="NO" alpha="0.25" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Iz-jx-R8M" customClass="StandardButton" customModule="FirebaseAuthentication" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="128.5" width="608" height="30"/>
+                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Create Account">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="createAccountButtonActionEvent:" destination="lFU-aQ-YfW" eventType="touchUpInside" id="EzQ-8U-wUt"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="BYp-Ti-h4Q" secondAttribute="trailing" id="1Sa-6Q-ZZe"/>
@@ -141,10 +151,16 @@
                                     <constraint firstAttribute="trailing" secondItem="54s-jf-oLo" secondAttribute="trailing" id="oFo-il-u9I"/>
                                 </constraints>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="8GG-Nd-dun">
+                                <rect key="frame" x="365.5" y="372" width="37" height="37"/>
+                                <color key="color" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="8GG-Nd-dun" firstAttribute="centerX" secondItem="RVg-19-FCo" secondAttribute="centerX" id="0vP-Vq-Eaw"/>
                             <constraint firstItem="vX9-c4-q2G" firstAttribute="centerY" secondItem="RVg-19-FCo" secondAttribute="centerY" id="WPe-3Y-xLk"/>
+                            <constraint firstItem="vX9-c4-q2G" firstAttribute="top" secondItem="8GG-Nd-dun" secondAttribute="bottom" constant="24" id="ien-Dq-mdP"/>
                             <constraint firstItem="eUn-8e-fjV" firstAttribute="trailing" secondItem="vX9-c4-q2G" secondAttribute="trailing" constant="80" id="ncB-dk-OA3"/>
                             <constraint firstItem="eUn-8e-fjV" firstAttribute="trailing" secondItem="vX9-c4-q2G" secondAttribute="trailing" constant="24" id="ogg-aY-viE"/>
                             <constraint firstItem="vX9-c4-q2G" firstAttribute="leading" secondItem="eUn-8e-fjV" secondAttribute="leading" constant="80" id="ptV-Pn-kC7"/>
@@ -168,8 +184,12 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="activityIndicatorView" destination="8GG-Nd-dun" id="HhT-vz-kqy"/>
+                        <outlet property="createAccountButton" destination="7Iz-jx-R8M" id="z0R-Ow-MBh"/>
                         <outlet property="emailTextField" destination="BYp-Ti-h4Q" id="9Uq-Ye-L5X"/>
                         <outlet property="passwordTextField" destination="54s-jf-oLo" id="Pdz-Ew-8hL"/>
+                        <outlet property="stackViewYCenterConstraint" destination="WPe-3Y-xLk" id="0zS-ec-sqp"/>
+                        <segue destination="iQo-K1-j7t" kind="show" identifier="homeSegue" id="gVX-qs-yaZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t2X-vy-zI3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -184,8 +204,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="dUj-34-sbj">
-                                <rect key="frame" x="80" y="421" width="608" height="182.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="dUj-34-sbj">
+                                <rect key="frame" x="80" y="433" width="608" height="158.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your email and password to sign in." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1La-Ur-E98">
                                         <rect key="frame" x="0.0" y="0.0" width="608" height="20.5"/>
@@ -194,19 +214,19 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tEf-R6-9uQ">
-                                        <rect key="frame" x="0.0" y="44.5" width="608" height="30"/>
+                                        <rect key="frame" x="0.0" y="36.5" width="608" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IGc-eh-wUu">
-                                        <rect key="frame" x="0.0" y="98.5" width="608" height="30"/>
+                                        <rect key="frame" x="0.0" y="82.5" width="608" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sns-or-UW0" customClass="StandardButton" customModule="FirebaseAuthentication" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="152.5" width="608" height="30"/>
+                                    <button opaque="NO" alpha="0.25" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sns-or-UW0" customClass="StandardButton" customModule="FirebaseAuthentication" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="128.5" width="608" height="30"/>
                                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Sign In">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -277,7 +297,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ee4-xK-GqX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2783" y="710"/>
+            <point key="canvasLocation" x="2845" y="329"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="cA7-iN-4aQ">
@@ -298,4 +318,7 @@
             <point key="canvasLocation" x="208.80000000000001" y="318.89055472263868"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="gVX-qs-yaZ"/>
+    </inferredMetricsTieBreakers>
 </document>
