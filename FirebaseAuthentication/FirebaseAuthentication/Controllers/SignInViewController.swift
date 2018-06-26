@@ -42,7 +42,10 @@ class SignInViewController: UIViewController {
     // MARK: Setup
     
     private func setupView() {
+        
         title = navTitle
+        guard let user = Auth.auth().currentUser else { return }
+        emailTextField.text = user.email
     }
     
     private func setupTextFields() {

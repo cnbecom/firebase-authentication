@@ -14,6 +14,8 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var idLabel: UILabel!
     @IBOutlet weak var isAnonymousLabel: UILabel!
+    @IBOutlet weak var lastSignInDateLabel: UILabel!
+    @IBOutlet weak var creationDateLabel: UILabel!
     
     // MARK: Lifecycle
     
@@ -33,6 +35,8 @@ class HomeViewController: UIViewController {
         guard let user = Auth.auth().currentUser else { return }
         idLabel.text = user.email
         isAnonymousLabel.text = String(user.isAnonymous)
+        lastSignInDateLabel.text = user.metadata.lastSignInDate?.description
+        creationDateLabel.text = user.metadata.creationDate?.description
         
     }
     
