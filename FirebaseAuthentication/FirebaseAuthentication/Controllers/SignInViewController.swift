@@ -6,19 +6,26 @@
 //
 
 import UIKit
+import Firebase
 
 class SignInViewController: UIViewController {
 
-    // MARK: Outlets
-    
-    @IBOutlet weak var emailField: UITextField!
-    @IBOutlet weak var passwordField: UITextField!
-    @IBOutlet weak var signInButton: StandardButton!
-    
     // MARK: Constants
     
     private let navTitle = "Sign In"
     private let homeSegueIdentifier = "homeSegue"
+    private enum textFieldTag: Int {
+        case emailTextFieldTag = 10
+        case passwordTextFieldTag = 20
+    }
+    
+    // MARK: Outlets
+    
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var signInButton: StandardButton!
+    @IBOutlet weak var stackViewYCenterConstraint: NSLayoutConstraint!
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
     // MARK: Lifecycle
     
@@ -26,29 +33,150 @@ class SignInViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        setupView()
+        setupTextFields()
+        setupKeyboardObservers()
+        disableServiceActivities()
+    }
+    
+    // MARK: Setup
+    
+    private func setupView() {
         title = navTitle
     }
     
-    // MARK: Action Event Handlers
+    private func setupTextFields() {
+        
+        emailTextField.tag = textFieldTag.emailTextFieldTag.rawValue
+        emailTextField.delegate = self
+        passwordTextField.tag = textFieldTag.passwordTextFieldTag.rawValue
+        passwordTextField.delegate = self
+        
+    }
+    
+    private func setupKeyboardObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(CreateAccountViewController.keyboardWillShow), name: Notification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(CreateAccountViewController.keyboardWillHide), name: Notification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    // MARK: Update
+    
+    private func validateEmail() -> Bool {
+        guard let email = emailTextField.text else { return false }
+        return email.isValidEmail()
+    }
+    
+    private func validatePassword() -> Bool {
+        guard let password = passwordTextField.text else { return false }
+        return password.isValidPassword()
+    }
+    
+    private func validateTextFields() -> Bool {
+        return validateEmail() && validatePassword()
+    }
+    
+    private func disableSignInButton() {
+        signInButton.alpha = 0.25
+        signInButton.isUserInteractionEnabled = false
+    }
+    
+    private func enableSignInButton() {
+        signInButton.alpha = 1.0
+        signInButton.isUserInteractionEnabled = true
+    }
+    
+    private func disableServiceActivities() {
+        activityIndicatorView.isHidden = true
+        activityIndicatorView.stopAnimating()
+    }
+    
+    private func enableServiceActivities() {
+        activityIndicatorView.isHidden = false
+        activityIndicatorView.startAnimating()
+    }
+    
+    private func attemptSignIn() {
+        
+         guard let email = emailTextField.text, let password = passwordTextField.text else { return }
+        
+         enableServiceActivities()
+         Auth.auth().signIn(withEmail: email, password: password) { [weak self] (user, error) in
+            // Firebase Closure
+            self?.disableServiceActivities()
+            if let error = error {
+                self?.presentAlert(withTitle: "Firebase Error", andMessage: error.localizedDescription)
+                return
+            }
+            self?.transitionToHomeViewController()
+         }
+    }
+    
+    private func presentAlert(withTitle title: String, andMessage message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: Action Event Handlers and Observers
     
     @IBAction func signInButtonActionEvent(_ sender: UIButton) {
         attemptSignIn()
     }
     
-    // MARK: Update
+    @objc func keyboardWillShow(notification: Notification) {
+        view.layoutIfNeeded()
+        self.stackViewYCenterConstraint.constant = -40
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5, delay: 0, options: [], animations: { [weak self] in
+            self?.view.layoutIfNeeded()
+        })
+    }
     
-    private func attemptSignIn() {
-        performSegue(withIdentifier: homeSegueIdentifier, sender: self)
+    @objc func keyboardWillHide(notification: Notification) {
+        view.layoutIfNeeded()
+        self.stackViewYCenterConstraint.constant = 0
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5, delay: 0, options: [], animations: { [weak self] in
+            self?.view.layoutIfNeeded()
+        })
     }
     
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    private func transitionToHomeViewController() {
+        performSegue(withIdentifier: homeSegueIdentifier, sender: self)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         title = nil
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
     }
 
+}
+
+extension SignInViewController: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        if validateTextFields() {
+            enableSignInButton()
+        } else {
+            disableSignInButton()
+        }
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if textField.tag == textFieldTag.emailTextFieldTag.rawValue {
+            passwordTextField.becomeFirstResponder()
+        } else {
+            if validateTextFields() {
+                enableSignInButton()
+            } else {
+                disableSignInButton()
+            }
+            view.endEditing(true)
+        }
+        return true
+    }
+    
 }

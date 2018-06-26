@@ -41,11 +41,6 @@ class CreateAccountViewController: UIViewController {
         setupKeyboardObservers()
         disableServiceActivities()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-    }
 
     // MARK: Setup
     
@@ -105,17 +100,8 @@ class CreateAccountViewController: UIViewController {
         activityIndicatorView.startAnimating()
     }
     
-    private func presentAlert(withTitle title: String, andMessage message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
-    }
-    
-    // MARK: Action Event Handlers and Observers
-    
-    @IBAction func createAccountButtonActionEvent(_ sender: UIButton) {
-
+    private func attemptCreateAccount() {
+        
         guard let email = emailTextField.text, let password = passwordTextField.text else { return }
         
         enableServiceActivities()
@@ -130,6 +116,19 @@ class CreateAccountViewController: UIViewController {
             self?.transitionToHomeViewController()
         }
         
+    }
+    
+    private func presentAlert(withTitle title: String, andMessage message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: Action Event Handlers and Observers
+    
+    @IBAction func createAccountButtonActionEvent(_ sender: UIButton) {
+        attemptCreateAccount()
     }
     
     @objc func keyboardWillShow(notification: Notification) {
@@ -155,8 +154,7 @@ class CreateAccountViewController: UIViewController {
     }
      
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        title = nil
     }
 
 }
