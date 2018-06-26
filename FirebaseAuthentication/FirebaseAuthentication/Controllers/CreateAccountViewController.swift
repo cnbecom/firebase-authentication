@@ -21,7 +21,10 @@ class CreateAccountViewController: UIViewController {
 
     // MARK: Outlets and Properties
     
+    
+    @IBOutlet weak var emailWarningLabel: UILabel!
     @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var passwordWarningLabel: UILabel!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var createAccountButton: StandardButton!
     @IBOutlet weak var stackViewYCenterConstraint: NSLayoutConstraint!
@@ -48,6 +51,8 @@ class CreateAccountViewController: UIViewController {
     
     private func setupView() {
         title = navTitle
+        emailWarningLabel.alpha = 0.0
+        passwordWarningLabel.alpha = 0.0
     }
     
     private func setupTextFields() {
@@ -66,18 +71,18 @@ class CreateAccountViewController: UIViewController {
     
     // MARK: Update
     
-    private func validateTextFields() -> Bool {
-        
+    private func validateEmail() -> Bool {
         guard let email = emailTextField.text else { return false }
-        if !email.isValidEmail() {
-            return false
-        }
-            
+        return email.isValidEmail()
+    }
+    
+    private func validatePassword() -> Bool {
         guard let password = passwordTextField.text else { return false }
-        if password.count > 0 {
-            return true
-        }
-        return false
+        return password.isValidPassword()
+    }
+    
+    private func validateTextFields() -> Bool {
+        return validateEmail() && validatePassword()
     }
     
     private func disableCreateAccountButton() {
@@ -100,6 +105,13 @@ class CreateAccountViewController: UIViewController {
         activityIndicatorView.startAnimating()
     }
     
+    private func presentAlert(withTitle title: String, andMessage message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+    
     // MARK: Action Event Handlers and Observers
     
     @IBAction func createAccountButtonActionEvent(_ sender: UIButton) {
@@ -107,16 +119,15 @@ class CreateAccountViewController: UIViewController {
         guard let email = emailTextField.text, let password = passwordTextField.text else { return }
         
         enableServiceActivities()
-        Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] (user, error) in
             
-            self.disableServiceActivities()
-            guard let email = authResult?.user.email, error == nil else {
-                print("error: \(error!.localizedDescription)")
-//                self.showMessagePrompt(error!.localizedDescription)
+            // Firebase Closure
+            self?.disableServiceActivities()
+            if let error = error {
+                self?.presentAlert(withTitle: "Firebase Error", andMessage: error.localizedDescription)
                 return
             }
-            print("email: \(email)")
-            self.transitionToHomeViewController()
+            self?.transitionToHomeViewController()
         }
         
     }
@@ -143,23 +154,49 @@ class CreateAccountViewController: UIViewController {
         performSegue(withIdentifier: homeSegueIdentifier, sender: self)
     }
      
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
-
 
 }
 
 extension CreateAccountViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        if textField.tag == textFieldTag.emailTextFieldTag.rawValue {
+            if validateEmail() {
+                if emailWarningLabel.alpha != 0.0 {
+                    UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5, delay: 0, options: [], animations: { [weak self] in
+                        self?.emailWarningLabel.alpha = 0.0
+                    })
+                }
+            } else if emailWarningLabel.alpha != 1.0 {
+                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5, delay: 0, options: [], animations: { [weak self] in
+                    self?.emailWarningLabel.alpha = 1.0
+                })
+            }
+        } else {
+            if validatePassword() {
+                if passwordWarningLabel.alpha != 0.0 {
+                    UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5, delay: 0, options: [], animations: { [weak self] in
+                        self?.passwordWarningLabel.alpha = 0.0
+                    })
+                }
+            } else if passwordWarningLabel.alpha != 1.0 {
+                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5, delay: 0, options: [], animations: { [weak self] in
+                    self?.passwordWarningLabel.alpha = 1.0
+                })
+            }
+        }
+        
         if validateTextFields() {
             enableCreateAccountButton()
         } else {
             disableCreateAccountButton()
         }
+        
         return true
     }
     

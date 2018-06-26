@@ -6,9 +6,17 @@
 //
 
 import UIKit
+import Firebase
 
 class HomeViewController: UIViewController {
 
+    // Outlets and Properties
+    
+    @IBOutlet weak var idLabel: UILabel!
+    @IBOutlet weak var isAnonymousLabel: UILabel!
+    
+    // MARK: Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -16,9 +24,20 @@ class HomeViewController: UIViewController {
         
         navigationItem.hidesBackButton = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign Out", style: .done, target: self, action: #selector(signOutEvent))
+        
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        guard let user = Auth.auth().currentUser else { return }
+        idLabel.text = user.email
+        isAnonymousLabel.text = String(user.isAnonymous)
+        
+    }
     
+    // MARK: Action Event Handlers and Selectors
+
     @objc func signOutEvent(sender: UIBarButtonItem) {
         navigationController?.popToRootViewController(animated: true)
     }

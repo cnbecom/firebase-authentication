@@ -137,6 +137,7 @@
 				9A3391E320CF242B002E205E /* Frameworks */,
 				9A3391E420CF242B002E205E /* Resources */,
 				29E7F66DD0553ECEB2BDB5B7 /* [CP] Embed Pods Frameworks */,
+				2A94E026331A4980F30E861F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -232,6 +233,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FirebaseAuthentication/Pods-FirebaseAuthentication-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2A94E026331A4980F30E861F /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FirebaseAuthentication/Pods-FirebaseAuthentication-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -396,10 +412,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = FirebaseAuthentication/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.FirebaseAuthentication;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -415,10 +428,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = FirebaseAuthentication/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.FirebaseAuthentication;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;

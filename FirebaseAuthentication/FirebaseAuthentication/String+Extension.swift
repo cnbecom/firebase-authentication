@@ -14,4 +14,11 @@ extension String {
         let predicate = NSPredicate(format:"SELF MATCHES[c] %@", regex)
         return predicate.evaluate(with: self)
     }
+    
+    func isValidPassword() -> Bool {
+        let regex = "[A-Z0-9a-z]{5,}$" // characters + digits
+//        let regex = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,}$" // characters + digits + characters
+        let predicate = NSPredicate(format:"SELF MATCHES[c] %@", regex)
+        return predicate.evaluate(with: self)
+    }
 }
