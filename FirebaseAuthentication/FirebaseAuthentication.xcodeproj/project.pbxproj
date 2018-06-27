@@ -19,6 +19,7 @@
 		9A9B19E120DEC3F900CC5FF2 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9B19E020DEC3F900CC5FF2 /* SignInViewController.swift */; };
 		9A9B19E320E00E9000CC5FF2 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9B19E220E00E9000CC5FF2 /* HomeViewController.swift */; };
 		9A9B19E520E07DCA00CC5FF2 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9B19E420E07DCA00CC5FF2 /* String+Extension.swift */; };
+		CB2CDD9820E317E300118D24 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2CDD9720E317E300118D24 /* KeychainService.swift */; };
 		FA018F2549B751F53B344BEA /* Pods_FirebaseAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 553671787B5843D98A02DAE9 /* Pods_FirebaseAuthentication.framework */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,7 @@
 		9A9B19E020DEC3F900CC5FF2 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		9A9B19E220E00E9000CC5FF2 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		9A9B19E420E07DCA00CC5FF2 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		CB2CDD9720E317E300118D24 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 				9A3391F520CF242C002E205E /* Info.plist */,
 				9A9B19DC20DEBC6E00CC5FF2 /* StandardButton.swift */,
 				9A9B19E420E07DCA00CC5FF2 /* String+Extension.swift */,
+				CB2CDD9920E317EB00118D24 /* Services */,
 			);
 			path = FirebaseAuthentication;
 			sourceTree = "<group>";
@@ -115,6 +118,14 @@
 				9A3391ED20CF242B002E205E /* Main.storyboard */,
 			);
 			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		CB2CDD9920E317EB00118D24 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				CB2CDD9720E317E300118D24 /* KeychainService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		F57585C810652A3680618F44 /* Frameworks */ = {
@@ -262,6 +273,7 @@
 				9A9B19DD20DEBC6E00CC5FF2 /* StandardButton.swift in Sources */,
 				9A9B19E120DEC3F900CC5FF2 /* SignInViewController.swift in Sources */,
 				9A9B19D820D58CB300CC5FF2 /* LandingViewController.swift in Sources */,
+				CB2CDD9820E317E300118D24 /* KeychainService.swift in Sources */,
 				9A3391EA20CF242B002E205E /* AppDelegate.swift in Sources */,
 				9A9B19E320E00E9000CC5FF2 /* HomeViewController.swift in Sources */,
 				9A9B19DB20DB32C200CC5FF2 /* EmailViewController.swift in Sources */,
@@ -412,10 +424,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = FirebaseAuthentication/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.FirebaseAuthentication;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -431,10 +440,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = FirebaseAuthentication/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.FirebaseAuthentication;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;

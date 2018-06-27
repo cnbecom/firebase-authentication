@@ -21,7 +21,6 @@ class CreateAccountViewController: UIViewController {
 
     // MARK: Outlets and Properties
     
-    
     @IBOutlet weak var emailWarningLabel: UILabel!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordWarningLabel: UILabel!
@@ -51,12 +50,10 @@ class CreateAccountViewController: UIViewController {
     }
     
     private func setupTextFields() {
-        
         emailTextField.tag = textFieldTag.emailTextFieldTag.rawValue
         emailTextField.delegate = self
         passwordTextField.tag = textFieldTag.passwordTextFieldTag.rawValue
         passwordTextField.delegate = self
-        
     }
     
     private func setupKeyboardObservers() {
@@ -107,13 +104,20 @@ class CreateAccountViewController: UIViewController {
         enableServiceActivities()
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] (user, error) in
             
-            // Firebase Closure
             self?.disableServiceActivities()
             if let error = error {
                 self?.presentAlert(withTitle: "Firebase Error", andMessage: error.localizedDescription)
                 return
             }
-            self?.transitionToHomeViewController()
+            
+            let credentials = Credentials(account: email, password: password)
+            do {
+                try KeychainService.save(credentials: credentials)
+                self?.transitionToHomeViewController()
+            } catch let error {
+                self?.presentAlert(withTitle: "Keychain Error", andMessage: error.localizedDescription)
+            }
+            
         }
         
     }

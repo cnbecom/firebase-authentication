@@ -44,17 +44,23 @@ class SignInViewController: UIViewController {
     private func setupView() {
         
         title = navTitle
-        guard let user = Auth.auth().currentUser else { return }
-        emailTextField.text = user.email
+        guard let user = Auth.auth().currentUser, let email = user.email else { return }
+        emailTextField.text = email
+        do {
+            let credentials = try KeychainService.fetchPasswordForAccount(account: email)
+            passwordTextField.text = credentials.password
+            enableSignInButton()
+        } catch let error {
+            presentAlert(withTitle: "Keychain Error", andMessage: error.localizedDescription)
+        }
+        
     }
     
     private func setupTextFields() {
-        
         emailTextField.tag = textFieldTag.emailTextFieldTag.rawValue
         emailTextField.delegate = self
         passwordTextField.tag = textFieldTag.passwordTextFieldTag.rawValue
         passwordTextField.delegate = self
-        
     }
     
     private func setupKeyboardObservers() {
@@ -104,13 +110,14 @@ class SignInViewController: UIViewController {
         
          enableServiceActivities()
          Auth.auth().signIn(withEmail: email, password: password) { [weak self] (user, error) in
-            // Firebase Closure
+
             self?.disableServiceActivities()
             if let error = error {
                 self?.presentAlert(withTitle: "Firebase Error", andMessage: error.localizedDescription)
                 return
             }
             self?.transitionToHomeViewController()
+            
          }
     }
     
